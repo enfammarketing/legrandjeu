@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAGE DE SÉLECTION — TROUVE TON NIVEAU</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a0a;
+            --bg-card: #141414;
+            --accent: #ff3c3c;
+            --accent-glow: #ff3c3c;
+            --text: #ffffff;
+            --text-muted: #888888;
+            --gold: #ffd700;
+            --green: #00d26a;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .hero {
+            min-height: 100vh;
+            background: 
+                linear-gradient(180deg, rgba(10,10,10,0.9) 0%, rgba(10,10,10,0.95) 100%),
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,60,60,0.03) 2px, rgba(255,60,60,0.03) 4px);
+            padding: 40px 20px;
+            position: relative;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(255,60,60,0.15) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(36px, 8vw, 56px);
+            line-height: 1.1;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+        
+        .intro {
+            background: var(--bg-card);
+            border: 1px solid #222;
+            padding: 35px;
+            margin-bottom: 40px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .intro::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--accent);
+        }
+        
+        .intro h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .intro p {
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .truth-box {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+            border: 1px solid #333;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .truth-box p {
+            font-size: 15px;
+            line-height: 1.8;
+        }
+        
+        .truth-box strong {
+            color: var(--accent);
+        }
+        
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+            padding: 25px;
+            background: #111;
+            border: 1px solid #222;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .stat-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 32px;
+            color: var(--accent);
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .offers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+        
+        .offer-card {
+            background: linear-gradient(180deg, #1a1a1a 0%, #111 100%);
+            border: 2px solid #2a2a2a;
+            padding: 35px;
+            position: relative;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .offer-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .offer-card.featured {
+            border-color: var(--accent);
+            background: linear-gradient(180deg, #1f1010 0%, #150a0a 100%);
+        }
+        
+        .offer-card.featured::before {
+            content: 'RECOMMANDÉ';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            color: white;
+            padding: 4px 15px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+        
+        .offer-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--gold);
+            color: #000;
+            padding: 4px 12px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        
+        .offer-badge.discount {
+            background: var(--green);
+            color: white;
+        }
+        
+        .offer-level {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+        
+        .offer-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 28px;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+        
+        .offer-tagline {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+        
+        .target-audience {
+            background: #151515;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 3px solid var(--accent);
+        }
+        
+        .target-audience-title {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+        
+        .target-audience p {
+            font-size: 13px;
+            color: #aaa;
+            line-height: 1.6;
+        }
+        
+        .offer-features {
+            list-style: none;
+            margin: 20px 0;
+            flex-grow: 1;
+        }
+        
+        .offer-features li {
+            padding: 10px 0;
+            padding-left: 25px;
+            position: relative;
+            color: #ccc;
+            font-size: 13px;
+            border-bottom: 1px solid #222;
+        }
+        
+        .offer-features li:last-child {
+            border-bottom: none;
+        }
+        
+        .offer-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+        
+        .offer-price {
+            text-align: center;
+            margin: 25px 0 15px;
+        }
+        
+        .price-old {
+            font-size: 16px;
+            color: var(--text-muted);
+            text-decoration: line-through;
+            margin-right: 10px;
+        }
+        
+        .price-current {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 48px;
+            color: var(--text);
+            line-height: 1;
+        }
+        
+        .price-note {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+        
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 18px 25px;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            margin-top: auto;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn:hover {
+            background: #ff5555;
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(255,60,60,0.5);
+        }
+        
+        .payment-note {
+            text-align: center;
+            padding: 15px;
+            background: #151515;
+            border: 1px solid #222;
+            margin: 30px 0;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        
+        .payment-note strong {
+            color: var(--gold);
+        }
+        
+        .decision-wall {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+            border: 2px solid var(--accent);
+            padding: 40px;
+            margin: 50px 0;
+            text-align: center;
+            position: relative;
+        }
+        
+        .decision-wall::before {
+            content: '🔒';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-dark);
+            padding: 0 15px;
+            font-size: 24px;
+        }
+        
+        .decision-wall h3 {
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+        
+        .places-left {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+        
+        .places-item {
+            text-align: center;
+        }
+        
+        .places-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 36px;
+            color: var(--accent);
+        }
+        
+        .places-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1        
+        .next-session {
+            background: #111;
+            padding: 15px;
+            marginpx;
+        }
+-top: 20px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        
+        .next-session strong {
+            color: var(--text);
+        }
+        
+        .testimonials {
+            margin: 50px 0;
+        }
+        
+        .testimonials h3 {
+            text-align: center;
+            font-size: 14px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+        }
+        
+        .testimonial {
+            background: var(--bg-card);
+            border: 1px solid #222;
+            padding: 25px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .testimonial::before {
+            content: '"';
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            font-size: 48px;
+            color: var(--accent);
+            opacity: 0.3;
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+        
+        .testimonial p {
+            font-size: 14px;
+            font-style: italic;
+            color: #ccc;
+            margin-bottom: 15px;
+            padding-left: 30px;
+        }
+        
+        .testimonial-author {
+            font-size: 13px;
+            color: var(--accent);
+            font-weight: 600;
+            padding-left: 30px;
+        }
+        
+        .final-cta {
+            text-align: center;
+            padding: 50px 30px;
+            background: linear-gradient(180deg, transparent 0%, rgba(255,60,60,0.05) 100%);
+            margin-top: 40px;
+        }
+        
+        .final-cta h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+        
+        .final-cta p {
+            color: var(--text-muted);
+            margin-bottom: 25px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .timer-box {
+            background: #151515;
+            border: 2px solid var(--accent);
+            padding: 20px 40px;
+            display: inline-block;
+            margin: 20px 0;
+        }
+        
+        .timer-label {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+        
+        .timer-value {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 36px;
+            color: var(--accent);
+        }
+        
+        .pps {
+            margin-top: 40px;
+            padding: 25px;
+            background: #111;
+            border: 1px solid #222;
+            font-size: 14px;
+            color: var(--text-muted);
+            text-align: center;
+        }
+        
+        .pps strong {
+            color: var(--text);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+        
+        @media (max-width: 600px) {
+            .stats-bar {
+                gap: 25px;
+            }
+            
+            .places-left {
+                gap: 20px;
+            }
+            
+            .offer-card {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <div class="container">
+            <div class="header">
+                <h1>PAGE DE SÉLECTION</h1>
+                <p class="subtitle">Parce que choisir, c'est déjà agir</p>
+            </div>
+            
+            <div class="intro">
+                <h2>TU ES À UNE DÉCISION DU SIGNAL</h2>
+                <p>Tu as compris le jeu. Tu sais que rester invisible n'est pas une option.<br><br>
+                <strong>Maintenant, la seule question qui reste :</strong><br><br>
+                À quel niveau veux-tu jouer ?</p>
+                <br>
+                <p style="font-size: 13px; color: var(--text-muted);">Chaque offre est calibrée pour un objectif différent. Aucune n'est "mieux" que l'autre. La seule mauvaise décision, c'est de ne pas en prendre.</p>
+            </div>
+            
+            <div class="truth-box">
+                <p>Les 100 000 morceaux sortis aujourd'hui <strong>ne choisissent pas</strong>. Ils <strong>espèrent</strong>.</p>
+                <br>
+                <p>Ils espèrent que leur pote partagera le lien. Ils espèrent qu'un influenceur les remarquera. Ils espèrent que l'algorithme sera gentil.</p>
+                <br>
+                <p style="color: var(--accent); font-weight: 600;">L'algorithme n'est jamais gentil.</p>
+                <br>
+                <p>Toi, t'es là. Tu <strong>choisis</strong>. Tu <strong>décides</strong> de ton niveau d'activation.</p>
+                <br>
+                <p>Pendant que les autres espèrent, toi tu passes à l'<strong>acte</strong>.</p>
+            </div>
+            
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-icon">⏳</div>
+                    <div class="stat-value" id="nextActivation">...</div>
+                    <div class="stat-label">Prochaine activation</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">🔥</div>
+                    <div class="stat-value"><span id="artistsEngaged">17</span>/20</div>
+                    <div class="stat-label">Artistes engagés</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-icon">⏰</div>
+                    <div class="stat-value">20</div>
+                    <div class="stat-label">Places max par session</div>
+                </div>
+            </div>
+            
+            <h3 style="text-align: center; font-size: 14px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); margin: 40px 0 30px;">TON NIVEAU D'ACTIVATION</h3>
+            
+            <div class="offers-grid">
+                <!-- NIVEAU 1 -->
+                <div class="offer-card">
+                    <div class="offer-level">NIVEAU 1 — L'ACTIVATION</div>
+                    <div class="offer-name">Le Coup d'Avance</div>
+                    <div class="offer-tagline">Pour sortir du trou noir</div>
+                    
+                    <div class="target-audience">
+                        <div class="target-audience-title">Ceux qui choisissent ce niveau :</div>
+                        <p>Ils veulent tester sans réfléchir • Ils sortent un single et veulent voir ce que ça donne sur du public réel • Ils ont compris que l'inaction coûte plus cher que 49€</p>
+                    </div>
+                    
+                    <ul class="offer-features">
+                        <li>7 jours de signal actif</li>
+                        <li>L'algorithme détecte ta présence</li>
+                        <li>Sortie garantie de l'invisibilité immédiate</li>
+                    </ul>
+                    
+                    <div class="offer-price">
+                        <div class="price-current">49€</div>
+                        <div class="price-note">Le prix d'Uber Eats sur une semaine. Sauf que là, tu manges pas, tu existes.</div>
+                    </div>
+                    
+                    <a href="https://www.paypal.me/egotrip36k/49" class="btn" target="_blank" rel="noopener">Je prends le Coup d'Avance</a>
+                </div>
+                
+                <!-- NIVEAU 2 -->
+                <div class="offer-card featured">
+                    <div class="offer-badge discount">-20€ AUJOURD'HUI</div>
+                    <div class="offer-level">NIVEAU 2 — LE MOMENTUM</div>
+                    <div class="offer-name">Le Coup de Poker</div>
+                    <div class="offer-tagline">Pour forcer l'algorithme à te remarquer</div>
+                    
+                    <div class="target-audience">
+                        <div class="target-audience-title">Ceux qui choisissent ce niveau :</div>
+                        <p>Ils ont déjà un projet, une direction, une patte • Ils sortent un clip, une mixtape, un truc qui compte • Ils savent que le timing fait la différence entre un buzz et un bide</p>
+                    </div>
+                    
+                    <ul class="offer-features">
+                        <li>14 jours de placement stratégique</li>
+                        <li>Ton son à côté d'artistes qui ont déjà percé</li>
+                        <li>L'algorithme forcé à te considérer comme un gagnant</li>
+                        <li>Analyse du signal pour comprendre ce qui a marché</li>
+                    </ul>
+                    
+                    <div class="offer-price">
+                        <span class="price-old">149€</span>
+                        <span class="price-current">129€</span>
+                        <div class="price-note">Parce que ceux qui agissent maintenant méritent un avantage.</div>
+                    </div>
+                    
+                    <a href="https://www.paypal.me/egotrip36k/129" class="btn" target="_blank" rel="noopener">Je prends le Coup de Poker</a>
+                </div>
+                
+                <!-- NIVEAU 3 -->
+                <div class="offer-card">
+                    <div class="offer-level">NIVEAU 3 — LA DÉMONSTRATION</div>
+                    <div class="offer-name">Le Grand Jeu</div>
+                    <div class="offer-tagline">Pour prouver que t'es là</div>
+                    
+                    <div class="target-audience">
+                        <div class="target-audience-title">Ceux qui choisissent ce niveau :</div>
+                        <p>Ils préparent un vrai mouvement • Ils ont une équipe, des objectifs, une vision • Ils veulent pas juste un pic, mais un levier pour la suite</p>
+                    </div>
+                    
+                    <ul class="offer-features">
+                        <li>30 jours de signal intensif</li>
+                        <li>L'effet "club fermé" — sélection premium exclusive</li>
+                        <li>L'algorithme activé en continu, poussé au maximum</li>
+                        <li>Analyse stratégique complète : ce que le signal a déclenché</li>
+                        <li>Suivi à J+15 : on ajuste, on optimise, on maximise</li>
+                    </ul>
+                    
+                    <div class="offer-price">
+                        <div class="price-current">199€</div>
+                        <div class="price-note">Pour les artistes sérieux. Pour ceux qui veulent gagner.</div>
+                    </div>
+                    
+                    <a href="https://www.paypal.me/egotrip36k/199" class="btn" target="_blank" rel="noopener">Je prends le Grand Jeu</a>
+                </div>
+            </div>
+            
+            <div class="payment-note">
+                <strong>💳 Nous préférons les paiements via PayPal</strong> — Simple, rapide et sécurisé. Cliquez sur le bouton de votre offre pour être redirigé vers notre page PayPal.
+            </div>
+            
+            <div class="decision-wall">
+                <h3>LE MUR DES DÉCISIONS</h3>
+                <p>Regarde autour de toi.</p>
+                <br>
+                <p>Les 20 places partent vite. À chaque minute qui passe, un autre artiste choisit son niveau. Un autre envoie son signal. Un autre passe devant toi dans la file d'attente de l'algorithme.</p>
+                <br>
+                <p>Tu veux être dans les 20 qui activent leur carrière ? Ou dans les 99 980 qui espèrent ?</p>
+                
+                <div class="places-left">
+                    <div class="places-item">
+                        <div class="places-value" id="placesLeft">3</div>
+                        <div class="places-label">Places restantes</div>
+                    </div>
+                    <div class="places-item">
+                        <div class="places-value">20</div>
+                        <div class="places-label">Total places</div>
+                    </div>
+                </div>
+                
+                <div class="next-session">
+                    🔥 Déjà <strong id="artistsEngaged2">17</strong> artistes engagés pour la session du <strong id="currentSessionDate">...</strong><br><br>
+                    📊 Prochaine session complète : <strong id="nextSessionDate">...</strong> — Si tu rates celle-ci, tu repars dans l'attente. Et dans l'attente, t'existes pas.
+                </div>
+            </div>
+            
+            <div class="testimonials">
+                <h3>CEUX QUI ONT CHOISI AVANT TOI</h3>
+                
+                <div class="testimonial">
+                    <p>"J'en avais marre d'être dans le vent. 14 jours après, l'algorithme me proposait à des gens que je connaissais pas. Mon pote m'a dit 'eh t'es partout en ce moment'. Non, j'étais juste activé."</p>
+                    <div class="testimonial-author">— Sanakens, 10k+ streams après activation</div>
+                </div>
+                
+                <div class="testimonial">
+                    <p>"Je pensais que c'était du pipeau. Puis j'ai vu mon Spotify for Artists passer de 50 streams par mois à 300 par jour. Là tu te dis que t'as perdu du temps à pas le faire plus tôt."</p>
+                    <div class="testimonial-author">— Lyor, artiste R&B</div>
+                </div>
+            </div>
+            
+            <div class="final-cta">
+                <h2>LA SEULE MAUVAISE DÉCISION</h2>
+                <p><strong>Hésiter.</strong> Attendre le "bon moment". Se dire "je vais d'abord améliorer mon son" alors que personne l'entend.</p>
+                <br>
+                <p style="color: var(--text); font-weight: 600;">Le bon moment, c'est maintenant. Parce que maintenant, t'es là. T'as lu jusqu'ici. T'as compris.</p>
+                <br>
+                <p>Les autres non.</p>
+                
+                <div class="timer-box">
+                    <div class="timer-label">⏳ Fermeture des inscriptions dans :</div>
+                    <div class="timer-value" id="countdownTimer">24:00:00</div>
+                </div>
+                
+                <br>
+                <a href="#" class="btn" style="max-width: 350px; margin: 0 auto;" onclick="location.reload();">Je prends ma décision maintenant</a>
+            </div>
+            
+            <div class="pps">
+                <strong>PPS :</strong> Si t'as un doute sur ton niveau, prends le premier. C'est 49€ pour sortir du noir. T'as le droit de tester. Ce que t'as pas le droit de faire, c'est <strong>rien faire</strong>.
+            </div>
+            
+            <div class="footer">
+                <p>© 2026 LE GRAND JEU — Tous droits réservés</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // === DATES ET TIMERS DYNAMIQUES ===
+        
+        // Date du jour
+        const today = new Date();
+        const options = { day: 'numeric', month: 'long', year: 'numeric' };
+        const todayStr = today.toLocaleDateString('fr-FR', options);
+        
+        // Prochaine activation (aujourd'hui + 3 jours pour créer l'urgence)
+        const nextActivation = new Date(today);
+        nextActivation.setDate(nextActivation.getDate() + 3);
+        const daysUntilActivation = Math.ceil((nextActivation - today) / (1000 * 60 * 60 * 24));
+        
+        // Session actuelle = aujourd'hui
+        const currentSessionDate = today.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' });
+        
+        // Prochaine session = aujourd'hui + 1 mois
+        const nextSession = new Date(today);
+        nextSession.setMonth(nextSession.getMonth() + 1);
+        const nextSessionDate = nextSession.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+        
+        // Mise à jour des éléments de la page
+        document.getElementById('nextActivation').textContent = daysUntilActivation + 'j';
+        document.getElementById('currentSessionDate').textContent = currentSessionDate;
+        document.getElementById('nextSessionDate').textContent = nextSessionDate;
+        
+        // === COMPTEUR DE PLACES (aléatoire pour créer l'urgence) ===
+        // Entre 14 et 19 artistes engagés (crée un sentiment de manque)
+        const engaged = Math.floor(Math.random() * (19 - 14 + 1)) + 14;
+        const left = 20 - engaged;
+        
+        document.getElementById('artistsEngaged').textContent = engaged;
+        document.getElementById('artistsEngaged2').textContent = engaged;
+        document.getElementById('placesLeft').textContent = left;
+        
+        // === TIMER COMPTE À REBOURS 24H ===
+        // Nouveau countdown à chaque ouverture (24h à partir de maintenant)
+        let hours = 23;
+        let minutes = 59;
+        let seconds = 59;
+        
+        function updateTimer() {
+            const timerEl = document.getElementById('countdownTimer');
+            const h = hours.toString().padStart(2, '0');
+            const m = minutes.toString().padStart(2, '0');
+            const s = seconds.toString().padStart(2, '0');
+            timerEl.textContent = `${h}:${m}:${s}`;
+            
+            if (seconds > 0) {
+                seconds--;
+            } else if (minutes > 0) {
+                minutes--;
+                seconds = 59;
+            } else if (hours > 0) {
+                hours--;
+                minutes = 59;
+                seconds = 59;
+            } else {
+                // Reset à 24h quand ça arrive à 0
+                hours = 23;
+                minutes = 59;
+                seconds = 59;
+            }
+        }
+        
+        // Démarrer le timer
+        updateTimer();
+        setInterval(updateTimer, 1000);
+        
+        // === GÉNÉRATION ALÉATOISE DE PREUVE SOCIALE (optionnel) ===
+        // Pour montrer que qqn vient de comprarer récemment
+        console.log('Page chargée le: ' + todayStr);
+        console.log('Session: ' + currentSessionDate);
+        console.log('Places restantes: ' + left);
+    </script>
+</body>
+</html>
